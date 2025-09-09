@@ -21,7 +21,7 @@
 
         body {
             font-family: 'NoonnuBasicGothic';
-            background-image: url(https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExdTNkZzE0NXgxMGYxdHY5YXVtaWJ6aTFrcTM1YWh1cTA2MzE4cXY2ZSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/pHb82xtBPfqEg/giphy.gif);
+            background-image: url(https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExbTh6azN4dHNicTQwemVtc2VlbXVsc3hhcXgybmpnM3Boa3FqbjFqYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ToMjGpnsDvb5S4Pl23S/giphy.gif);
             min-height: 100vh;
             display: flex;
             background-size: cover;
@@ -58,24 +58,24 @@
         }
 
         .shape:nth-child(1) {
-            width: 100px;
-            height: 100px;
+            width: 130px;
+            height: 130px;
             top: 20%;
             left: 10%;
             animation-delay: 0s;
         }
 
         .shape:nth-child(2) {
-            width: 150px;
-            height: 150px;
+            width: 200px;
+            height: 200px;
             top: 60%;
-            right: 15%;
+            right: 10%;
             animation-delay: 2s;
         }
 
         .shape:nth-child(3) {
-            width: 80px;
-            height: 80px;
+            width: 50px;
+            height: 50px;
             top: 10%;
             right: 20%;
             animation-delay: 4s;
@@ -99,11 +99,6 @@
             position: relative;
             z-index: 1;
             transition: all 0.3s ease;
-        }
-
-        .glass-container:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 35px 65px rgba(0, 0, 0, 0.15);
         }
 
         h1 {
@@ -176,7 +171,9 @@
         }
 
         .calculate-btn:hover {
-            transform: translateY(-2px);
+            transform: scale(1.05);
+            background: white;
+            color: red;
             box-shadow: 0 15px 30px rgba(238, 90, 36, 0.4);
         }
 
@@ -358,7 +355,7 @@
             const visualSection = document.getElementById('visualSection');
             visualSection.innerHTML = '';
             
-            if (peopleCount > 0 && peopleCount <= 20) {
+            if (peopleCount > 0 && peopleCount <= 14) {
                 for (let i = 1; i <= peopleCount; i++) {
                     const person = document.createElement('div');
                     person.className = 'person';
