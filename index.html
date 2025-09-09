@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>악수 계산기 - 글래스모피즘</title>
+    <style>
+
+        @font-face {
+    font-family: 'NoonnuBasicGothic';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noon-2410@1.0/NoonnuBasicGothicRegular.woff2') format('woff2');
+    font-weight: normal;
+    font-display: swap;
+}
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'NoonnuBasicGothic';
+            background-image: url(https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExdTNkZzE0NXgxMGYxdHY5YXVtaWJ6aTFrcTM1YWh1cTA2MzE4cXY2ZSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/pHb82xtBPfqEg/giphy.gif);
+            min-height: 100vh;
+            display: flex;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+            word-break: keep-all;
+        }
+
+        /* 배경 장식 요소들 */
+        .bg-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .background-image {width: 100vw}
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .shape:nth-child(1) {
+            width: 100px;
+            height: 100px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            top: 60%;
+            right: 15%;
+            animation-delay: 2s;
+        }
+
+        .shape:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            top: 10%;
+            right: 20%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        /* 글래스모피즘 컨테이너 */
+        .glass-container {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .glass-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 35px 65px rgba(0, 0, 0, 0.15);
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .input-section {
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            color: white;
+            margin-bottom: 10px;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        .input-container {
+            position: relative;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            color: white;
+            font-size: 1.2em;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.25);
+            transform: scale(1.02);
+        }
+
+        input[type="number"]::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .calculate-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            border: none;
+            border-radius: 15px;
+            color: white;
+            font-size: 1.2em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(238, 90, 36, 0.3);
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(238, 90, 36, 0.4);
+        }
+
+        .calculate-btn:active {
+            transform: translateY(0);
+        }
+
+        .result-section {
+            margin-top: 30px;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .result-section.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .result-number {
+            font-size: 3em;
+            font-weight: 700;
+            color: #ff6b6b;
+            text-align: center;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .result-text {
+            color: white;
+            text-align: center;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+        }
+
+        .formula-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .formula {
+            color: rgba(255, 255, 255, 0.9);
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+        }
+
+        .explanation {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9em;
+            text-align: center;
+            margin-top: 10px;
+            line-height: 1.4;
+        }
+
+        .handshake-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .person {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(116, 185, 255, 0.3);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .person:nth-child(even) {
+            background: linear-gradient(135deg, #55a3ff, #2d3436);
+            animation-delay: 1s;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .error-message {
+            color: #ff6b6b;
+            text-align: center;
+            margin-top: 10px;
+            font-weight: 600;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .error-message.show {
+            opacity: 1;
+        }
+
+        @media (max-width: 600px) {
+            .glass-container {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .result-number {
+                font-size: 2.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <div class="glass-container">
+        <h1>🤝 악수 계산기 🤝</h1>
+        <p class="subtitle">모든 사람이 서로 악수할 때 필요한 총 악수 횟수를 계산해보세요!</p>
+        
+        <div class="input-section">
+            <label for="peopleCount">참가자 수를 입력하세요:</label>
+            <div class="input-container">
+                <input type="number" id="peopleCount" placeholder="예: 10" min="0" max="1000">
+            </div>
+            <div class="error-message" id="errorMessage"></div>
+        </div>
+
+        <button class="calculate-btn" onclick="calculateHandshakes()">악수 횟수 계산하기</button>
+
+        <div class="result-section" id="resultSection">
+            <div class="result-number" id="resultNumber">0</div>
+            <div class="result-text" id="resultText">총 악수 횟수</div>
+            
+            <div class="handshake-visual" id="visualSection"></div>
+            
+            <div class="formula-section">
+                <div class="formula">공식: n × (n-1) ÷ 2</div>
+                <div class="explanation">
+                    n명이 모두 악수할 때, 각 사람은 자신을 제외한 (n-1)명과 악수합니다.
+                    하지만 A와 B의 악수는 B와 A의 악수와 같으므로 2로 나누어줍니다.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // nSum 함수 (1부터 n까지의 합)
+        function nSum(n) {
+            return (n * (n + 1)) / 2;
+        }
+
+        // 악수 계산 함수
+        function calculateTotalHandshakes(peopleCount) {
+            if (peopleCount < 2) {
+                return 0;
+            }
+            // n-1까지의 합을 구함 (실제로는 n*(n-1)/2 공식 사용)
+            return (peopleCount * (peopleCount - 1)) / 2;
+        }
+
+        // 시각적 표현 생성
+        function createVisual(peopleCount) {
+            const visualSection = document.getElementById('visualSection');
+            visualSection.innerHTML = '';
+            
+            if (peopleCount > 0 && peopleCount <= 20) {
+                for (let i = 1; i <= peopleCount; i++) {
+                    const person = document.createElement('div');
+                    person.className = 'person';
+                    person.textContent = i;
+                    person.style.animationDelay = `${(i-1) * 0.1}s`;
+                    visualSection.appendChild(person);
+                }
+            }
+        }
+
+        // 에러 메시지 표시
+        function showError(message) {
+            const errorElement = document.getElementById('errorMessage');
+            errorElement.textContent = message;
+            errorElement.classList.add('show');
+            
+            setTimeout(() => {
+                errorElement.classList.remove('show');
+            }, 3000);
+        }
+
+        // 메인 계산 함수
+        function calculateHandshakes() {
+            const input = document.getElementById('peopleCount');
+            const peopleCount = parseInt(input.value);
+            const resultSection = document.getElementById('resultSection');
+            const resultNumber = document.getElementById('resultNumber');
+            const resultText = document.getElementById('resultText');
+
+            // 입력 검증
+            if (isNaN(peopleCount) || peopleCount < 0) {
+                showError('올바른 숫자를 입력해주세요!');
+                return;
+            }
+
+            if (peopleCount > 1000) {
+                showError('참가자 수는 1000명 이하로 입력해주세요!');
+                return;
+            }
+
+            const totalHandshakes = calculateTotalHandshakes(peopleCount);
+
+            // 결과 애니메이션
+            resultSection.classList.remove('show');
+            
+            setTimeout(() => {
+                resultNumber.textContent = totalHandshakes.toLocaleString();
+                
+                if (peopleCount === 0 || peopleCount === 1) {
+                    resultText.textContent = '악수가 불가능합니다';
+                } else {
+                    resultText.textContent = `${peopleCount}명이 모두 악수하면 총 ${totalHandshakes.toLocaleString()}번의 악수가 필요합니다`;
+                }
+                
+                createVisual(peopleCount);
+                resultSection.classList.add('show');
+            }, 100);
+        }
+
+        // 엔터키로 계산
+        document.getElementById('peopleCount').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                calculateHandshakes();
+            }
+        });
+
+        // 입력값 실시간 검증
+        document.getElementById('peopleCount').addEventListener('input', function(e) {
+            const value = parseInt(e.target.value);
+            if (value < 0) {
+                e.target.value = '';
+            }
+        });
+
+        // 초기 예제 실행
+        window.addEventListener('load', function() {
+            document.getElementById('peopleCount').value = '10';
+            setTimeout(() => {
+                calculateHandshakes();
+            }, 500);
+        });
+    </script>
+</body>
+</html>
